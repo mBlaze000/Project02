@@ -1,7 +1,7 @@
 # Project 1 - Basic PHP
 
 ## Live URL
-<http://p1.burkeweb.com>
+<http://p2.burkeweb.com>
 
 ## Description
 Project 2: Setting up a password generator.
