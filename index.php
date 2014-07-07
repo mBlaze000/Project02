@@ -12,11 +12,57 @@
 
 <?php
 #echo $word_list;
-
-print_r($array_words);
-
+/*
+echo "<pre>";
+#print_r($array_words);
+print_r($_POST);
+echo "</pre>";
+*/
 #echo print_r($out);
+echo funcPassword();
 ?>
+
+<form action="index.php" method="post">
+    <input name="num_words" type="hidden" value="4" />
+    <input name="use_delim" type="hidden" value=" " />
+    <input name="use_caps" type="hidden" value="" />
+
+    <input name="use_num" type="hidden" value="" />
+    <input name="use_sym" type="hidden" value="" />
+    <input name="use_alphanum" type="hidden" value="" />
+    <p>
+        <select name="num_words">
+        	<?php echo funcMenu("num_words"); ?>
+        </select>
+    </p>
+    <p>
+        <select name="use_delim">
+        	<?php echo funcMenu("use_delim"); ?>
+        </select>
+    </p>
+    <p>
+        <select name="use_caps">
+        	<?php echo funcMenu("use_caps"); ?>
+        </select>
+    </p>
+    <p>
+        <label>
+            <?php echo funcCheck("use_num") ?> Use a number
+      </label>
+        <br />
+        <label>
+            <?php echo funcCheck("use_sym") ?> Use a special symbol
+      </label>
+        <br />
+        <label>
+            <?php echo funcCheck("use_alphanum") ?> Substitute numbers for letters
+      </label>
+        <br />
+    </p>
+<p>
+    <input name="Submit" type="submit" />
+    </p>
+</form>
 
 </body>
 </html>

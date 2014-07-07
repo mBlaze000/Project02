@@ -6,15 +6,29 @@
 	$word_start = strpos(HTML_PAGE, "<li>")+4;
 	$word_end = strpos(HTML_PAGE, "</li>");
 	
-	$list_close = strrpos(HTML_PAGE, "</li>");
-	
 	$word_length = $word_end - $word_start;
-	$word_list = "";
+	
+	$num_words = 4;
+	$use_delim = " ";
+	$use_caps = "";
+	$use_num = "";
+	$use_sym = "";
+	$use_alphanum = "";
+	
+	if (!empty($_POST)){
+		$num_words = $_POST["num_words"];
+		$use_delim = $_POST["use_delim"];
+		$use_caps = $_POST["use_caps"];
+		$use_num = $_POST["use_num"];
+		$use_sym = $_POST["use_sym"];
+		$use_alphanum = $_POST["use_alphanum"];
+	}
+
 	
 	for ($i = 0; $i < WORD_COUNT; $i++) {
 		$build_words = trim(substr ( HTML_PAGE , $word_start, $word_length ));
 		If (strlen($build_words) > 1) {
-			$array_words[] = $build_words;
+			$array_words[] = strtolower ($build_words);
 			$word_start = strpos(HTML_PAGE, "<li>", $word_start + $word_length)+4;
 			$word_end = strpos(HTML_PAGE, "</li>", $word_start);
 			$word_length = $word_end - $word_start;
@@ -23,38 +37,96 @@
 		}
 	}
 
-	
-	
-	/*
-	html_entity_decode ( string $string [, int $flags = ENT_COMPAT | ENT_HTML401 [, string $encoding = "UTF-8" ]] )
-	preg_match_all("|<[^>]+>(.*)</[^>]+>|U", HTML_PAGE,
-    $out, PREG_PATTERN_ORDER);
-	
-	$htmlpage = file_get_contents(HTML_URL);
-	$pagepath = $_SERVER['SCRIPT_NAME'];
-	$arraypath = explode("/",$pagepath);
-	$arraycount = count($arraypath);
-	$numlocation = 0;
-	$strlink = ""; 
-	
-	for($a=0;$a<$arraycount;$a++) {
-		if ($pagedirectory==$arraypath[$a]) {
-			$numlocation = $a+1;
-			$a = $arraycount;
+	function funcPassword() {
+		global $num_words, $use_delim, $use_caps, $use_num, $use_sym, $use_alphanum;
+		global $array_words;
+		$array_symbols = array("!", "@", "#","$", "%", "&");
+		$array_alphanum = array("a"=>"4", "e"=>"3", "l"=>"1", "o"=>"0", "s"=>"5");
+		$gen_password = "";
+		$last_count = count($array_words)-1;
+		for($i=1;$i<=$num_words;$i++) {
+			$current_word = $array_words[rand(0,$last_count)];
+			if ($use_delim == "camel") {
+				$current_word = ucfirst($current_word);
+			} else if ($i != $num_words) {
+				$current_word .= $use_delim;
+			}
+			$gen_password .= $current_word;
 		}
+		if ($use_caps == "initial") {
+			$gen_password = ucfirst($gen_password);
+		} else if ($use_caps == "all") {
+			$gen_password = strtoupper($gen_password);
+		} else if ($use_caps == "word") {
+			if ($use_delim == " "){
+				$gen_password = ucwords($gen_password);
+			} else if ($use_delim != "camel") {
+				$gen_password = str_replace(" ", $use_delim , ucwords(str_replace($use_delim , " " , $gen_password)));
+			}
+		}
+		if ($use_num=="use_num") {
+			if ($use_delim != "camel") {
+				$gen_password .= $use_delim;
+			}
+			$gen_password .= rand(0,9);
+		}
+		if ($use_sym=="use_sym") {
+			$gen_password .= $array_symbols[rand(0,5)];
+		}
+		if ($use_alphanum=="use_alphanum") {
+			foreach ($array_alphanum as $letter => $number){
+				$gen_password = str_replace($letter , $number , $gen_password);
+				$gen_password = str_replace(strtoupper($letter) , $number , $gen_password);
+			}
+		}
+		return $gen_password;
 	}
 	
-	function funcCreateLink($countupto,$thearray) {
-		global $strlink;
-		$strlink = "";
-		for($n=1;$n<$countupto;$n++) {
-			$strlink = $strlink."/".$thearray[$n];
-		}
-		return $strlink;
-	}
-
-	$pageroot = funcCreateLink($numlocation,$arraypath); 
 	
-	*/
+	function funcMenu($current_list) {
+		if (!empty($_POST)){
+			$selected_item = $_POST[$current_list];
+		} else {
+			$selected_item = "x";
+		}
+		$array_lists = array (
+			"num_words"  => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9),
+			"use_delim" => array(" " => "Use space", "-" => "Use-dash", "_" => "Use_underscore", "camel" => "UseCamelCase"),
+			"use_caps"   => array("" => "all lowercase", "all" => "ALL UPPERCASE", "word" => "Initial Caps", "initial" => "Initialize first word only")
+		);
+		$array_current = $array_lists[$current_list];
+		$list ="";
+		$i = 0;
+		foreach ($array_current as $value => $label){
+			if($i>0){
+				$tab = "\t\t\t";
+			}else{
+				$tab = "";
+			}
+			if ($value==$selected_item){
+				$selected = " selected=\"selected\"";
+			} else{
+				$selected = "";
+			}
+			$list .= $tab."<option value=\"".$value."\"".$selected.">".$label."</option>\n";
+			$i += 1;
+		}
+		return $list;
+	}
+	
+	function funcCheck($current_box) {
+		if (!empty($_POST)){
+			$check_value = $_POST[$current_box];
+		} else {
+			$check_value = "";
+		}
+		if ($check_value==$current_box){
+			$checked = " checked=\"checked\"";
+		} else {
+			$checked = "";
+		}
+		$checkbox = "<input type=\"checkbox\" name=\"".$current_box."\" value=\"".$current_box."\"".$checked."/>";
+		return $checkbox;
+	}
 
 ?>
