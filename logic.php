@@ -1,13 +1,18 @@
 <?php
 
+	//========================================================================================
+	// These CONSTANTS and VARIABLES are used to scrape words. 
+	//========================================================================================
 	define("HTML_URL", "http://www.paulnoll.com/Books/Clear-English/words-15-16-hundred.html");
 	define("HTML_PAGE", file_get_contents(HTML_URL));
 	define("WORD_COUNT", substr_count ( HTML_PAGE , "</li>"));
 	$word_start = strpos(HTML_PAGE, "<li>")+4;
 	$word_end = strpos(HTML_PAGE, "</li>");
-	
 	$word_length = $word_end - $word_start;
 	
+	//========================================================================================
+	// These VARIABLES are used in the function that generates passwords 
+	//========================================================================================
 	$num_words = 4;
 	$use_delim = " ";
 	$use_caps = "";
@@ -23,8 +28,12 @@
 		$use_sym = $_POST["use_sym"];
 		$use_alphanum = $_POST["use_alphanum"];
 	}
-
 	
+	$password_box = "pass".$num_words;
+
+	//========================================================================================
+	// This FOR loop builds an ARRAY that holds all words for the password. 
+	//========================================================================================
 	for ($i = 0; $i < WORD_COUNT; $i++) {
 		$build_words = trim(substr ( HTML_PAGE , $word_start, $word_length ));
 		If (strlen($build_words) > 1) {
@@ -37,6 +46,9 @@
 		}
 	}
 
+	//========================================================================================
+	// This FUNCTION generates the password based on user input. 
+	//========================================================================================
 	function funcPassword() {
 		global $num_words, $use_delim, $use_caps, $use_num, $use_sym, $use_alphanum;
 		global $array_words;
@@ -82,7 +94,9 @@
 		return $gen_password;
 	}
 	
-	
+	//========================================================================================
+	// This FUNCTION generates the HTML for the drop menus in the form. 
+	//========================================================================================
 	function funcMenu($current_list) {
 		if (!empty($_POST)){
 			$selected_item = $_POST[$current_list];
@@ -114,6 +128,9 @@
 		return $list;
 	}
 	
+	//========================================================================================
+	// This FUNCTION generates the HTML for the check boxes in the form. 
+	//========================================================================================
 	function funcCheck($current_box) {
 		if (!empty($_POST)){
 			$check_value = $_POST[$current_box];

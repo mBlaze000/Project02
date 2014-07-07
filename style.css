@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	padding: 20px;
+	font-size: small;
+}
+.content{
+	margin-right: auto;
+	margin-left: auto;
+}
+.menu {
+	width: 10em;
+	display: inline-block;
+}
+.checkbox {
+	margin-left: 10em;
+}
+
+/* =================== */
+/* PASSWORD BOX STYLES */
+/* =================== */
+.password {
+	font-size: large;
+	font-weight: normal;
+	border: medium double #000;
+	padding: 10px;
+	background-color: #CCC;
+	text-align: center;
+}
+.pass1, .pass2, .pass3 {
+	width: 25em;
+}
+.pass4, .pass5 {
+	width: 35em;
+}
+.pass6, .pass7 {
+	width: 40em;
+}
+.pass8, .pass9 {
+	width: 45em;
+}
