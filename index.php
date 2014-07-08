@@ -11,6 +11,8 @@
 
 <body>
     <div class="content">
+        <h1>Secure password generator to help keep you safer online</h1>
+        <p>This tool generates an xkcd style password. An xkcd password is one comprised of random common words. It is more difficult to guess, but easier to remember.</p>
         <div class="password <?php echo $password_box ?>">
             <?php echo funcPassword(); ?>
         </div>
