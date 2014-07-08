@@ -7,7 +7,7 @@ body {
 	font-size: small;
 }
 .content{
-	width: 45em;
+	width: 70em;
 	margin-right: auto;
 	margin-left: auto;	
 }
@@ -29,22 +29,9 @@ h1 {
 /* =================== */
 .password {
 	font-size: large;
-	font-weight: normal;
 	border: medium double #000;
 	padding: 10px;
 	background-color: #CCC;
 	text-align: center;
 	margin: 20px 0 20px 0;
-}
-.pass1, .pass2, .pass3 {
-	width: 25em;
-}
-.pass4, .pass5 {
-	width: 35em;
-}
-.pass6, .pass7 {
-	width: 40em;
-}
-.pass8, .pass9 {
-	width: 45em;
 }
